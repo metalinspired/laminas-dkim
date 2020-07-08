@@ -1,0 +1,7 @@
+<?php
+
+return [
+    'dkim' => [
+        'private_key' => 'your private key'
+    ]
+];

@@ -1,0 +1,36 @@
+{
+    "name": "metalinspired/laminas-dkim",
+    "type": "library",
+    "description": "DKIM Signer for Laminas Mail",
+    "keywords": ["Laminas Project", "dkim"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jaap van Turnhout",
+            "email": "jaap@jaapsblog.nl",
+            "homepage": "http://www.jaapsblog.nl"
+        }, {
+            "name": "Giovanni Iembo"
+        }, {
+            "name": "Milan Divkovic"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-openssl": "*",
+        "laminas/laminas-mail": "^2.0"
+    },
+    "require-dev": {
+        "laminas/laminas-servicemanager": "^3.4",
+        "laminas/laminas-coding-standard": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dkim\\": "src/"
+        }
+    },
+    "scripts": {
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf"
+    }
+}
