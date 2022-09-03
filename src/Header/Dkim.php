@@ -10,6 +10,9 @@ use Laminas\Mail\Header\HeaderInterface;
 
 use function strtolower;
 
+/**
+ * @see \DkimTest\Header\DkimTest
+ */
 final class Dkim implements HeaderInterface
 {
     public function __construct(private readonly string $value)

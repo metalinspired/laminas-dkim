@@ -7,6 +7,9 @@ namespace Dkim;
 use Dkim\Signer\Signer;
 use Dkim\Signer\SignerFactory;
 
+/**
+ * @see \DkimTest\ConfigProviderTest
+ */
 final class ConfigProvider
 {
     public function __invoke(): array

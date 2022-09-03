@@ -8,6 +8,9 @@ use Exception;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
+/**
+ * @see \DkimTest\Signer\SignerFactoryTest
+ */
 final class SignerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): Signer
