@@ -13,6 +13,8 @@ use Laminas\Mime\Part;
 use PHPUnit\Framework\TestCase;
 
 use function file_get_contents;
+use function str_repeat;
+use function str_replace;
 
 /**
  * @covers \Dkim\Signer\Signer
@@ -34,6 +36,7 @@ final class SignerTest extends TestCase
     protected function setUp(): void
     {
         $this->message = new Message();
+        $this->message->setEncoding('ASCII');
         $this->message->setFrom('from@example.com');
         $this->message->addTo('to@example.com');
         $this->message->addCc('cc@example.com');
@@ -208,8 +211,23 @@ final class SignerTest extends TestCase
             'internal_whitespace' => ["Subject   Subject"],
             'leading_whitespace'  => ["   Subject Subject"],
             'trailing_whitespace' => ["Subject Subject   "],
-            'continuation'        => ["Subject\r\n   Subject"],
         ];
+    }
+
+    public function testSignMessagesCanonicalizesFoldedHeader(): void
+    {
+        // phpcs:disable Generic.Files.LineLength.TooLong
+        $expected = 'v=1; a=rsa-sha256; bh=36+kqoyJsuwP2NJR3Fl95HuripBg2zfO++jH/8Df2LM=; c=relaxed; d=example.com; h=from:to:subject; s=202209; b=lBekusV7wbwMhkeS8CI6YvtIe8nLP6KmI7vjtobXWc3o69wq21tiPJfiliNp46oQZSf33CTnb l1MDI3nSzAfJNBGga/sZIhzjGXFRzfozGPCIPSiwRskX5+pQrKEMYNsPS5Uu3ZPhmtyDKrHsW EbBgo37MwR38emFM5NNCfynEo=';
+        // phpcs:enable
+
+        // 80-char subject will be wrapped at 70 chars
+        $this->message->setSubject(str_repeat("Subject ", 10));
+
+        $signer = new Signer(['private_key' => $this->privateKey, 'params' => $this->params]);
+        $signer->signMessage($this->message);
+        $header = $this->message->getHeaders()->get('dkim-signature');
+        self::assertInstanceOf(Dkim::class, $header);
+        self::assertSame($expected, $header->getFieldValue());
     }
 
     public function testSignMessageNoPrivateKeyThrowsException(): void
