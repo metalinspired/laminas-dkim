@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dkim\Signer;
 
 use Dkim\Header\Dkim;
@@ -7,6 +9,7 @@ use Exception;
 use Laminas\Mail\Header;
 use Laminas\Mail\Message;
 use Laminas\Mime\Message as MimeMessage;
+use OpenSSLAsymmetricKey;
 
 use function array_key_exists;
 use function base64_encode;
@@ -25,7 +28,7 @@ use function trim;
 
 use const OPENSSL_ALGO_SHA256;
 
-class Signer
+final class Signer
 {
     /**
      * All configurable params.
@@ -45,28 +48,22 @@ class Signer
 
     /**
      * Empty DKIM header.
-     *
-     * @var Dkim
      */
-    private $emptyDkimHeader;
+    private Dkim $emptyDkimHeader;
 
     /**
      * Canonized headers.
-     *
-     * @var string
      */
-    private $canonizedHeaders;
+    private string $canonizedHeaders;
 
     /**
      * The private key being used.
      *
-     * @var bool|resource key
+     * @var OpenSSLAsymmetricKey|resource|false key
      */
     private $privateKey = false;
 
     /**
-     * Set and validate DKIM options.
-     *
      * @throws Exception
      */
     public function __construct(array $config)
@@ -76,9 +73,7 @@ class Signer
         }
 
         if (isset($config['params']) && is_array($config['params']) && ! empty($config['params'])) {
-            foreach ($config['params'] as $key => $value) {
-                $this->setParam($key, $value);
-            }
+            $this->setParams($config['params']);
         }
     }
 
@@ -106,11 +101,9 @@ class Signer
     /**
      * Set Dkim param.
      *
-     * @param string $key
-     * @param string $value
      * @throws Exception
      */
-    public function setParam($key, $value): self
+    public function setParam(string $key, string $value): self
     {
         if (! array_key_exists($key, $this->getParams())) {
             throw new Exception("Invalid param '$key' given.");
@@ -365,7 +358,7 @@ PKEY;
     /**
      * Return OpenSSL key resource.
      *
-     * @return bool|resource key
+     * @return OpenSSLAsymmetricKey|resource|false key
      */
     private function getPrivateKey()
     {

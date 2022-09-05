@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dkim\Header;
 
 use Laminas\Mail\Header\Exception\InvalidArgumentException;
@@ -8,17 +10,16 @@ use Laminas\Mail\Header\HeaderInterface;
 
 use function strtolower;
 
-class Dkim implements HeaderInterface
+final class Dkim implements HeaderInterface
 {
-    /** @var string */
-    protected $value;
+    public function __construct(private readonly string $value)
+    {
+    }
 
     /**
-     * @param string $headerLine
-     * @return HeaderInterface|static
-     * @throws InvalidArgumentException
+     * {@inheritDoc}
      */
-    public static function fromString($headerLine)
+    public static function fromString($headerLine): self
     {
         [$name, $value] = GenericHeader::splitHeaderLine($headerLine);
 
@@ -27,21 +28,19 @@ class Dkim implements HeaderInterface
             throw new InvalidArgumentException('Invalid header line for DKIM-Signature string');
         }
 
-        return new static($value);
+        return new self($value);
     }
 
-    public function __construct(string $value)
-    {
-        $this->value = $value;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public function getFieldName(): string
     {
         return 'DKIM-Signature';
     }
 
     /**
-     * @param bool $format
+     * {@inheritDoc}
      */
     public function getFieldValue($format = HeaderInterface::FORMAT_RAW): string
     {
@@ -49,8 +48,7 @@ class Dkim implements HeaderInterface
     }
 
     /**
-     * @param string $encoding
-     * @return $this
+     * {@inheritDoc}
      */
     public function setEncoding($encoding): self
     {
@@ -58,11 +56,17 @@ class Dkim implements HeaderInterface
         return $this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getEncoding(): string
     {
         return 'ASCII';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function toString(): string
     {
         return 'DKIM-Signature: ' . $this->getFieldValue();

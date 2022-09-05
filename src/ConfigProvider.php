@@ -1,27 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dkim;
 
 use Dkim\Signer\Signer;
 use Dkim\Signer\SignerFactory;
 
-class ConfigProvider
+final class ConfigProvider
 {
-    /**
-     * Retrieve Dkim default configuration.
-     *
-     * @return array
-     */
-    public function __invoke()
+    public function __invoke(): array
     {
         return [
             'dependencies' => $this->getDependencyConfig(),
         ];
     }
 
-    /**
-     * Retrieve Dkim default dependency configuration.
-     */
     public function getDependencyConfig(): array
     {
         return [

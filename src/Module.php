@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dkim;
 
-class Module
+final class Module
 {
     public function getConfig(): array
     {
