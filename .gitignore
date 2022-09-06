@@ -2,5 +2,6 @@
 vendor
 composer.lock
 phpcs.xml
+phpunit.xml
 /.phpunit.cache/
 /.phpunit.result.cache
