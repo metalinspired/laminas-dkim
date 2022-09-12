@@ -35,10 +35,8 @@ final class Signer
 {
     /**
      * All configurable params.
-     *
-     * @var array
      */
-    private $params = [
+    private array $params = [
         // optional params having a default value set
         'v' => '1',
         'a' => 'rsa-sha256',
@@ -57,7 +55,7 @@ final class Signer
     /**
      * Canonized headers.
      */
-    private string $canonizedHeaders;
+    private string $canonizedHeaders = '';
 
     /**
      * The private key being used.
