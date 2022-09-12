@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dkim;
 
 /**
  * @see \DkimTest\ModuleTest
  */
-class Module
+final class Module
 {
     public function getConfig(): array
     {
