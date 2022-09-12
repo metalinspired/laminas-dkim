@@ -2,17 +2,21 @@
     "name": "metalinspired/laminas-dkim",
     "type": "library",
     "description": "DKIM Signer for Laminas Mail",
-    "keywords": ["Laminas Project", "dkim"],
+    "keywords": ["dkim", "laminas", "mezzio", "mail"],
     "license": "MIT",
     "authors": [
         {
             "name": "Jaap van Turnhout",
-            "email": "jaap@jaapsblog.nl",
-            "homepage": "http://www.jaapsblog.nl"
+            "homepage": "https://github.com/fastnloud"
         }, {
-            "name": "Giovanni Iembo"
+            "name": "Giovanni Iembo",
+            "homepage": "https://github.com/joepsyko"
         }, {
-            "name": "Milan Divkovic"
+            "name": "Milan Divkovic",
+            "homepage": "https://github.com/metalinspired"
+        }, {
+            "name": "Matt Kynx",
+            "homepage": "https://github.com/kynx"
         }
     ],
     "require": {
@@ -44,6 +48,12 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false
+        }
+    },
+    "extra": {
+        "laminas": {
+            "component": "Dkim",
+            "config-provider": "Dkim\\ConfigProvider"
         }
     }
 }
